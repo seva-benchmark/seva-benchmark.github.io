@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="SEVA: Leveraging Sketches to Evaluate Alignment between Human and Machine Visual Abstraction">
+  <!-- <meta name="keywords" content="Nerfies, D-NeRF, NeRF"> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SEVA: Leveraging Sketches to Evaluate Alignment between Human and Machine Visual Abstraction</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script> -->
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://kushinm.com/">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <!-- <a class="navbar-item" href="https://hypernerf.github.io">
+            HyperNeRF
+          </a>
+          <a class="navbar-item" href="https://nerfies.github.io">
+            Nerfies
+          </a>
+          <a class="navbar-item" href="https://latentfusion.github.io">
+            LatentFusion
+          </a>
+          <a class="navbar-item" href="https://photoshape.github.io">
+            PhotoShape
+          </a> -->
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">SEVA: Leveraging Sketches to Evaluate Alignment between Human and Machine Visual Abstraction</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://kushinm.com/">Kushin Mukherjee</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://hollyhuey.github.io/">Holly Huey</a><sup>2</sup>,</span>
+            <span class="author-block">
+              <a href="https://xuanchenlu.com">Xuanchen Lu</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://yael-vinker.github.io/website/">Yael Vinker</a><sup>3</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://www.linkedin.com/in/raguinak">Rio Aguina-Kang</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://faculty.runi.ac.il/arik/site/index.asp">Ariel Shamir</a><sup>4</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://cogtoolslab.github.io/">Judith E Fan</a><sup>2,5</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>University of Wisconsin, Madison</span>
+            <span class="author-block"><sup>2</sup>University of California, San Diego</span>
+            <span class="author-block"><sup>3</sup>Tel-Aviv University</span>
+            <span class="author-block"><sup>4</sup>Reichman University</span>
+            <span class="author-block"><sup>5</sup>Stanford University</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/xxx"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Video Link. -->
+              <span class="link-block">
+                <a href="https://www.youtube.com/xxx"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/xxx"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+              <!-- Dataset Link. -->
+              <span class="link-block">
+                <a href="https://github.com/xxx"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="far fa-images"></i>
+                  </span>
+                  <span>Data</span>
+                  </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <video id="teaser" autoplay muted loop playsinline height="100%">
+        <source src="./static/videos/teaser.mp4"
+                type="video/mp4">
+      </video>
+      <h2 class="subtitle has-text-centered">
+        we introduce SEVA, a new benchmark dataset containing 90K human-generated sketches that
+        systematically vary in their level of detail and evaluate a suite of state-of-the-art vision
+        models in their ability to understand them.
+      </h2>
+    </div>
+  </div>
+</section>
+
+
+<!-- <section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div id="results-carousel" class="carousel results-carousel">
+        <div class="item item-steve">
+          <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/steve.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-chair-tp">
+          <video poster="" id="chair-tp" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/chair-tp.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-shiba">
+          <video poster="" id="shiba" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/shiba.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-fullbody">
+          <video poster="" id="fullbody" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/fullbody.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-blueshirt">
+          <video poster="" id="blueshirt" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/blueshirt.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-mask">
+          <video poster="" id="mask" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/mask.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-coffee">
+          <video poster="" id="coffee" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/coffee.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-toby">
+          <video poster="" id="toby" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/toby2.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Sketching is a powerful tool for creating abstract images that are sparse but meaningful. Sketch understanding poses
+            fundamental challenges for general-purpose vision algorithms because it requires robustness to the sparsity of sketches
+            relative to natural visual inputs and because it demands tolerance for semantic ambiguity, as sketches can reliably
+            evoke multiple meanings. While current vision algorithms have achieved high performance on a variety of visual tasks, it
+            remains unclear to what extent they understand sketches in a human-like way.
+          </p>
+          <p>
+            Here we introduce <a
+              href="https://github.com/xxx"><i>SEVA</i></a>, a new benchmark dataset containing 90K human-generated sketches of 128 object concepts produced
+            under different time constraints, and thus systematically varying in sparsity. We evaluated a suite of state-of-the-art
+            vision algorithms on their ability to correctly identify the target concept depicted in these sketches and to generate
+            responses that are strongly aligned with human response patterns on the same sketch recognition task. We found that
+            vision algorithms that better predicted human sketch recognition performance also better approximated human uncertainty
+            about sketch meaning, but there remains a sizable gap between model and human response patterns.
+          </p>
+          <p>
+            To explore the potential of models that emulate human visual abstraction in generative tasks, we conducted further
+            evaluations of a recently developed sketch generation algorithm <a href="https://clipasso.github.io/clipasso/">(Vinker et al., 2022)</a> capable of generating sketches
+            that vary in sparsity. We hope that public release of this dataset and evaluation protocol will catalyze progress
+            towards algorithms with enhanced capacities for human-like visual abstraction.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+    <!-- Paper video. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/MrKrnHhk8IA?rel=0&amp;showinfo=0"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+    <!--/ Paper video. -->
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+
+      <!-- Framework. -->
+      <div class="column is-full-width">
+        <div class="content">
+          <h2 class="title is-3"><b>S</b>ketch-based <b>E</b>valuations of <b>V</b>isual <b>A</b>bstraction</h2>
+          <div class="content">
+            <img src="./static/images/diagram_srgb.png">
+          </div>
+          <div class="has-text-justified">
+            <p>
+
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div id="results-carousel" class="carousel results-carousel">
+        <div class="item item-1">
+          <img id="1" src="./static/images/dataset1.png">
+        </div>
+        <div class="item item-2">
+          <img id="2" src="./static/images/dataset2.png">
+        </div>
+        <div class="item item-3">
+          <img id="3" src="./static/images/dataset3.png">
+        </div>
+        <div class="item item-4">
+          <img id="4" src="./static/images/dataset4.png">
+        </div>
+        <div class="item item-5">
+          <img id="5" src="./static/images/dataset5.png">
+        </div>
+        <div class="item item-6">
+          <img id="6" src="./static/images/dataset6.png">
+        </div>
+        <div class="item item-7">
+          <img id="7" src="./static/images/dataset7.png">
+        </div>
+        <div class="item item-8">
+          <img id="8" src="./static/images/dataset8.png">
+        </div>
+        <div class="item item-9">
+          <img id="9" src="./static/images/dataset9.png">
+        </div>
+        <div class="item item-10">
+          <img id="10" src="./static/images/dataset10.png">
+        </div>
+        <div class="item item-11">
+          <img id="11" src="./static/images/dataset11.png">
+        </div>
+        <div class="item item-12">
+          <img id="12" src="./static/images/dataset12.png">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <!-- Framework. -->
+      <div class="column is-full-width">
+        <div class="content">
+          <h2 class="title is-3">Evaluating Human and Machine Sketch Understanding</h2>
+          <div>
+            <div class="has-text-justified">
+              <p>
+
+              </p>
+            </div>
+            <!-- <div class="row" style="margin-left: -10px; margin-right: -10px;">
+              <div class="col-4" style="padding:5px">
+                <img src="./static/images/result1.png">
+              </div>
+              <div class="col-4" style="padding:5px">
+                <img src="./static/images/result2.png">
+              </div>
+              <div class="col-4" style="padding:5px">
+                <img src="./static/images/result3.png">
+              </div>
+            </div>
+            <div class="row" style="margin-left: -10px; margin-right: -10px;">
+              <div class="col-4" style="padding:5px">
+                <img src="./static/images/result4.png">
+              </div>
+              <div class="col-4" style="padding:5px">
+                <img src="./static/images/result5.png">
+              </div>
+              <div class="col-4" style="padding:5px">
+                <img src="./static/images/result6.png">
+              </div>
+            </div>
+            <div class="row" style="margin-left: -10px; margin-right: -10px;">
+              <div class="col-4" style="padding:5px">
+                <img src="./static/images/result7.png">
+              </div>
+              <div class="col-4" style="padding:5px">
+                <img src="./static/images/result8.png">
+              </div>
+              <div class="col-4" style="padding:5px">
+                <img src="./static/images/result9.png">
+              </div>
+            </div>
+            <div class="row" style="margin-left: -10px; margin-right: -10px;">
+              <div class="col-4" style="padding:5px">
+                <img src="./static/images/result10.png">
+              </div>
+              <div class="col-4" style="padding:5px">
+                <img src="./static/images/result11.png">
+              </div>
+              <div class="col-4" style="padding:5px">
+                <img src="./static/images/result12.png">
+              </div>
+            </div>
+            <div class="row" style="margin-left: -10px; margin-right: -10px;">
+              <div class="col-4" style="padding:5px">
+                <img src="./static/images/result13.png">
+              </div>
+              <div class="col-4" style="padding:5px">
+                <img src="./static/images/result14.png">
+              </div>
+              <div class="col-4" style="padding:5px">
+                <img src="./static/images/result15.png">
+              </div>
+            </div>
+            <div class="row" style="margin-left: -10px; margin-right: -10px;">
+              <div class="col-4" style="padding:5px">
+                <img src="./static/images/result16.png">
+              </div>
+              <div class="col-4" style="padding:5px">
+                <img src="./static/images/result17.png">
+              </div>
+              <div class="col-4" style="padding:5px">
+                <img src="./static/images/result18.png">
+              </div>
+            </div>
+            <div class="row content" style="margin-left: -10px; margin-right: -10px;">
+              <div class="col-4" style="padding:5px">
+                <img src="./static/images/result19.png">
+              </div>
+              <div class="col-4" style="padding:5px">
+                <img src="./static/images/result20.png">
+              </div>
+              <div class="col-4" style="padding:5px">
+                <img src="./static/images/result21.png">
+              </div>
+            </div>
+            <div class="has-text-justified">
+              <p>
+                Lastly, we show examples of three typical failure patterns. The method has
+                degraded performance in 1) discriminating between commonly cooccurred objects;
+                2) aligning fine structures due to low-resolution feature maps; and 3) handling
+                non-continuous transformations caused by large changes in perspective and structure.
+                We think that improving model performance in such cases are prime targets for future work.
+              </p>
+            </div>
+            <div class="row" style="margin-left: -10px; margin-right: -10px;">
+              <div class="col-4" style="padding:5px">
+                <img src="./static/images/failure1.png">
+              </div>
+              <div class="col-4" style="padding:5px">
+                <img src="./static/images/failure2.png">
+              </div>
+              <div class="col-4" style="padding:5px">
+                <img src="./static/images/failure3.png">
+              </div>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@inproceedings{mukherjee2023SEVA,
+  author    = {Mukherjee, Kushin and Huey, Holly and Lu, Xuanchen and Vinker, Yael and Aguina-Kang, Rio and Shamir, Ariel and Fan, Judith},
+  title     = {SEVA: Leveraging sketches to evaluate alignment between human and machine visual abstraction},
+  booktitle = {Advances in Neural Information Processing Systems},
+  year      = {2023}
+}</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="./static/files/xxx.pdf">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/cogtoolslab/photo-sketch-correspondence" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p style="text-align:center;">
+            Thanks to <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a> for the website template.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
