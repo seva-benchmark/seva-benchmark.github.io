@@ -302,15 +302,21 @@
 
     <div class="columns is-centered">
 
-      <!-- Framework. -->
+      <!-- Dataset. -->
       <div class="column is-full-width">
         <div class="content">
-          <h2 class="title is-3"><b>SEVA</b>: <b>S</b>ketch-based <b>E</b>valuations of <b>V</b>isual <b>A</b>bstraction</h2>
-          <div class="content">
+          <h2 class="title is-3">SEVA: <b>S</b>ketch-based <b>E</b>valuations of <b>V</b>isual <b>A</b>bstraction</h2>
+          <!-- <div class="content">
             <img src="./static/images/diagram_srgb.png">
-          </div>
+          </div> -->
           <div class="has-text-justified">
             <p>
+              Our dataset contains approximately 90K human-generated sketches of a wide variety of
+              visual objects that also systematically vary in their level of detail, and thus the variety of meanings
+              they evoke. Each sketch is associated with one of 2,048 object instances belonging to one of 128
+              object categories selected from the <a href="https://things-initiative.org/">THINGS dataset</a>. We achieved variation in sketch detail by
+              imposing constraints on how much time humans (N=5,563 participants) had to produce each sketch
+              (i.e., 4s, 8s, 16s, 32s).
 
             </p>
           </div>
@@ -378,7 +384,11 @@
           <div>
             <div class="has-text-justified">
               <p>
-
+                Leveraging the human-generated sketches, we systematically evaluated how
+                well a diverse suite of 17 state-of-the-art vision models generate classification responses that align
+                with those produced by humans (N=1,709 participants) tasked with identifying the most appropriate
+                concept label for each sketch. We evaluated
+                human-model alignment using three different metrics:
               </p>
             </div>
             <!-- <div class="row" style="margin-left: -10px; margin-right: -10px;">
