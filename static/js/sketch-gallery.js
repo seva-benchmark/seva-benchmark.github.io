@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function renderImageGrid(sketch_ids) {
       const gridContainer = document.createElement("div");
       gridContainer.className = "sketch-grid";
+      gridContainer.style = "display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); grid-template-rows: repeat(8, minmax(0, 1fr));"
       sketchGallery.appendChild(gridContainer);
   
       const columns = getGridTrackCount(getComputedStyle(gridContainer).gridTemplateColumns);
@@ -93,4 +94,4 @@ document.addEventListener("DOMContentLoaded", function () {
   
     // Fetch and read the JSON file
     fetchAndReadJsonFile("./static/sketch_ids.json");
-  });  
+  });
