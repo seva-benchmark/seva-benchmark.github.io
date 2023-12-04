@@ -73,9 +73,13 @@ document.addEventListener("DOMContentLoaded", function () {
     async function fetchAndReadJsonFile(filePath) {
       try {
         const response = await fetch(filePath);
-        const jsonData = await response.json();
-  
-        renderImageGrid(jsonData);
+        let jsonData = await response.json();
+        let buggyIDs = ['63cb6590c966b17f84910ff0', '63cb29770328517f9fc4443c', '63cb65a4c966b17f84910ffe']
+        for (let i = 0; i < buggyIDs.length; i++) {
+            jsonData.splice(jsonData.indexOf(buggyIDs[i]), 1)
+        }
+        const sketchIDs = jsonData
+        renderImageGrid(sketchIDs);
       } catch (error) {
         console.error("Error reading the JSON file:", error);
       }
