@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function removeBadIDs(sketchIDs) {
         // bad IDs TBD
-        let buggyIDs = ['63cb6590c966b17f84910ff0',
+        let badIDs = ['63cb6590c966b17f84910ff0',
             '63cb29770328517f9fc4443c',
             '63cb65a4c966b17f84910ffe',
             '63cb6250f845c37fbc6fb4b7',
@@ -105,9 +105,10 @@ document.addEventListener("DOMContentLoaded", function () {
             '63cb64020328517f9fc449a4',
             '63cb2a250328517f9fc44588',
             '63cb6559c966b17f84910fc6',
-            '63cb62b6f845c37fbc6fb4e9']
-        for (let i = 0; i < buggyIDs.length; i++) {
-            sketchIDs.splice(sketchIDs.indexOf(buggyIDs[i]), 1)
+            '63cb62b6f845c37fbc6fb4e9',
+            '63cb6267f845c37fbc6fb4c1']
+        for (let i = 0; i < badIDs.length; i++) {
+            sketchIDs.splice(sketchIDs.indexOf(badIDs[i]), 1)
         }
     }
 
@@ -142,14 +143,16 @@ document.addEventListener("DOMContentLoaded", function () {
             minLength: 0,
             select: function (event, ui) {
                 autoChangeEnabled = false;
-                removeGrid();
-                let abstraction = document.getElementById("abstraction");
-                let concept = ui.item.value;
+                let sketchIDs;
+                let selectedConcept = ui.item.value;
                 if (abstraction.value != '') {
-                    renderImageGrid(extractSketchIDs(jsonData[concept][abstraction.value]));
+                    sketchIDs = extractSketchIDs(jsonData[selectedConcept][abstraction.value]);
                 } else {
-                    renderImageGrid(extractSketchIDs(jsonData[concept]));
-                }
+                    sketchIDs = extractSketchIDs(jsonData[selectedConcept]);
+                };
+                removeBadIDs(sketchIDs);
+                renderImageGrid(sketchIDs);
+                removeGrid();
             }
         }).focus(function () {
             // When the input field gains focus, switch to showing full concepts when the user starts typing
