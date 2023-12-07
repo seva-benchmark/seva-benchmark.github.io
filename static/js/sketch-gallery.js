@@ -185,23 +185,29 @@ document.addEventListener("DOMContentLoaded", function () {
         sketchGrid.remove();
     }
 
-    function extractSketchIDs(json) {
+    function extractSketchIDs(json, abstraction = '', filterIDs = false) {
         const resultArray = [];
-
-        function recursiveExtract(obj) {
+    
+        function recursiveExtract(obj, currentAbstraction, filter = false) {
             for (const key in obj) {
+                if (['4000', '8000', '16000', '32000'].includes(key) && filterIDs) {
+                    if (key != String(currentAbstraction)) {
+                        continue;
+                    }
+                }
+    
                 if (typeof obj[key] === 'object' && obj[key] !== null) {
-                    recursiveExtract(obj[key]);
+                    recursiveExtract(obj[key], currentAbstraction);
                 } else {
                     resultArray.push(obj[key]);
                 }
             }
         }
-
-        recursiveExtract(json);
-
+    
+        recursiveExtract(json, abstraction, filterIDs);
         return resultArray;
     }
+    
 
     // Function to fetch and read the JSON file containing a list of sketch ids
     async function fetchAndReadJsonFile(filePath) {
@@ -239,8 +245,11 @@ document.addEventListener("DOMContentLoaded", function () {
         abstraction.addEventListener('change', function () {
             let sketchIDs;
             let selectedConcept = concept.value;
+            autoChangeEnabled = false;
             if (Object.keys(jsonData).includes(selectedConcept) && abstraction.value != '') {
                 sketchIDs = extractSketchIDs(jsonData[selectedConcept][abstraction.value]);
+            } else if (selectedConcept === '') {
+                sketchIDs = extractSketchIDs(jsonData, abstraction.value, true);
             } else {
                 sketchIDs = extractSketchIDs(jsonData[selectedConcept]);
             };
