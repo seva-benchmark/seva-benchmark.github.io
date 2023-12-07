@@ -106,7 +106,14 @@ document.addEventListener("DOMContentLoaded", function () {
             '63cb2a250328517f9fc44588',
             '63cb6559c966b17f84910fc6',
             '63cb62b6f845c37fbc6fb4e9',
-            '63cb6267f845c37fbc6fb4c1']
+            '63cb6267f845c37fbc6fb4c1',
+            '63cb643a0328517f9fc449b1',
+            '63cb64870328517f9fc449d0',
+            '63cb29d80328517f9fc44513',
+            '63cb29eb0328517f9fc44533',
+            '63cb65b8c966b17f8491100c',
+            '63cb6272f845c37fbc6fb4c6',
+            '63cb6589c966b17f84910fec']
         for (let i = 0; i < badIDs.length; i++) {
             sketchIDs.splice(sketchIDs.indexOf(badIDs[i]), 1)
         }
