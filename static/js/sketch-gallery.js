@@ -5,16 +5,19 @@ document.addEventListener("DOMContentLoaded", function () {
     let jsonData;
 
     function renderImageGrid(sketchIDs) {
+        removeBadIDs(sketchIDs)
+        removeGrid()
+        sketchIDs = shuffleArray(sketchIDs)
         const gridContainer = document.createElement("div");
         gridContainer.id = "sketch-grid";
-        gridContainer.style = "display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: repeat(15, minmax(0, 1fr)); margin-top: 20px";
+        gridContainer.style = "display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); grid-template-rows: repeat(18, minmax(0, 1fr)); margin-top: 20px";
         sketchGallery.appendChild(gridContainer);
 
         const columns = getGridTrackCount(getComputedStyle(gridContainer).gridTemplateColumns);
         const rows = getGridTrackCount(getComputedStyle(gridContainer).gridTemplateRows);
 
         // Preload images
-        const preloadedImages = shuffleArray(sketchIDs).slice(0, columns * rows).map((sketch_id) => {
+        const preloadedImages = sketchIDs.slice(0, columns * rows).map((sketch_id) => {
             const img = new Image();
             img.src = `https://vab-recog.s3.us-west-2.amazonaws.com/vab-production-sketches/${sketch_id}.png`;
             img.style.transition = "opacity .7s ease-in-out"; // Apply transition for fade-in effect
@@ -30,6 +33,8 @@ document.addEventListener("DOMContentLoaded", function () {
             // Preload the next image
             const preloadImage = new Image();
             preloadImage.onload = function () {
+                img.style.transition = "opacity .7s ease-in-out"; // Apply transition for fade-in effect
+                img.style.opacity = 0; // Set initial opacity to 0
                 // Image is fully loaded, now change the source and apply fade-in effect
                 setTimeout(() => {
                     img.src = `https://vab-recog.s3.us-west-2.amazonaws.com/vab-production-sketches/${newSketchId}.png`;
@@ -64,12 +69,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
             }
 
+            img.style.transition = "opacity .7s ease-in-out"; // Apply transition for fade-in effect
+            img.style.opacity = 0; // Set initial opacity to 0
+
             // Append the image to the grid
             gridContainer.appendChild(img);
             // Trigger the fade-in effect after a short delay
             setTimeout(() => {
                 img.style.opacity = 1;
-            }, 20 * index);
+            }, 40 * index);
         });
 
         // Start automatic image changes
@@ -113,7 +121,20 @@ document.addEventListener("DOMContentLoaded", function () {
             '63cb29eb0328517f9fc44533',
             '63cb65b8c966b17f8491100c',
             '63cb6272f845c37fbc6fb4c6',
-            '63cb6589c966b17f84910fec']
+            '63cb6589c966b17f84910fec',
+            '63cb29fe0328517f9fc44554',
+            '63cb6295f845c37fbc6fb4d8',
+            '63cb65bfc966b17f84911013',
+            '63cb64e50328517f9fc44a0a',
+            '63cb63ef0328517f9fc4499f',
+            '63cb62e2f845c37fbc6fb501',
+            '63cb62c1f845c37fbc6fb4ee',
+            '63cb64150328517f9fc449aa',
+            '63cb2a110328517f9fc4456e',
+            '63cb62ccf845c37fbc6fb4f5',
+            '63cb64740328517f9fc449c7',
+            '63cb6582c966b17f84910fe8',
+            '63cb62edf845c37fbc6fb508']
         for (let i = 0; i < badIDs.length; i++) {
             sketchIDs.splice(sketchIDs.indexOf(badIDs[i]), 1)
         }
@@ -157,9 +178,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 } else {
                     sketchIDs = extractSketchIDs(jsonData[selectedConcept]);
                 };
-                removeBadIDs(sketchIDs);
                 renderImageGrid(sketchIDs);
-                removeGrid();
             }
         }).focus(function () {
             // When the input field gains focus, switch to showing full concepts when the user starts typing
@@ -189,12 +208,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function removeGrid() {
         let sketchGrid = document.getElementById("sketch-grid");
-        sketchGrid.remove();
+        if (sketchGrid) {
+            sketchGrid.remove();
+        }
     }
 
     function extractSketchIDs(json, abstraction = '', filterIDs = false) {
         const resultArray = [];
-    
+
         function recursiveExtract(obj, currentAbstraction, filter = false) {
             for (const key in obj) {
                 if (['4000', '8000', '16000', '32000'].includes(key) && filterIDs) {
@@ -202,7 +223,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         continue;
                     }
                 }
-    
+
                 if (typeof obj[key] === 'object' && obj[key] !== null) {
                     recursiveExtract(obj[key], currentAbstraction);
                 } else {
@@ -210,11 +231,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             }
         }
-    
+
         recursiveExtract(json, abstraction, filterIDs);
         return resultArray;
     }
-    
+
 
     // Function to fetch and read the JSON file containing a list of sketch ids
     async function fetchAndReadJsonFile(filePath) {
@@ -222,7 +243,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const response = await fetch(filePath);
             jsonData = await response.json();
             let sketchIDs = extractSketchIDs(jsonData);
-            removeBadIDs(sketchIDs);
             renderImageGrid(sketchIDs);
             return jsonData;
         } catch (error) {
@@ -260,8 +280,6 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
                 sketchIDs = extractSketchIDs(jsonData[selectedConcept]);
             };
-            removeGrid();
-            removeBadIDs(sketchIDs);
             renderImageGrid(sketchIDs);
         });
     });
